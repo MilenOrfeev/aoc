@@ -10,7 +10,6 @@ def do_operation(instructions, operation):
         instructions[operation.result_index] = operation.left_operand + operation.right_operand
     else:
         instructions[operation.result_index] = operation.left_operand * operation.right_operand
-    print(operation.result_index)
 
 
 def do_instructions(instructions):
@@ -18,9 +17,6 @@ def do_instructions(instructions):
 
     while index < len(instructions):
         action = instructions[index]
-
-        if action not in (99, 1, 2):
-            print(action)
 
         if action == 99:
             break
@@ -41,7 +37,6 @@ def solve():
     instructions[1] = 12
     instructions[2] = 2
 
-    # instructions = [2,4,4,5,99,0]
     do_instructions(instructions)
 
     print(instructions[0])
