@@ -15,7 +15,7 @@ def run_all():
 
         module = importlib.import_module(module_name)
         module.solve()
-        print()
+        print('-' * 28 + '\n\n')
 
 
 if __name__ == "__main__":
