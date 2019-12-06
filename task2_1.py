@@ -33,7 +33,7 @@ def do_instructions(instructions):
 
 
 def solve():
-    instructions = load_array("input2_1.txt")
+    instructions = load_array("input2.txt")
     instructions[1] = 12
     instructions[2] = 2
 

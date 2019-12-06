@@ -18,7 +18,7 @@ def noun_verb_pair(instructions, desired, highest):
 
 
 def solve():
-    instructions = load_array("input2_1.txt")
+    instructions = load_array("input2.txt")
     noun, verb = noun_verb_pair(instructions, desired=19690720, highest=99)
 
     print("Found noun {0} and verb {1}".format(noun, verb))

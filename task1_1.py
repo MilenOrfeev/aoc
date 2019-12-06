@@ -12,7 +12,7 @@ def total_fuel(masses):
 
 
 def solve():
-    lines = load_lines("input1_1.txt")
+    lines = load_lines("input1.txt")
     masses = [int(x) for x in lines]
     total = total_fuel(masses)
 
