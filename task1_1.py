@@ -2,7 +2,7 @@ from aoc_utils import load_lines
 
 
 def fuel_for_mass(mass):
-    return mass // 3 + 2
+    return mass // 3 - 2
 
 
 def total_fuel(masses):
@@ -16,4 +16,4 @@ def solve():
     masses = [int(x) for x in lines]
     total = total_fuel(masses)
 
-    print("A total of {} fuel will be needed for the modules".format(total))
+    print("A total of {} fuel will be needed for the modules.".format(total))
