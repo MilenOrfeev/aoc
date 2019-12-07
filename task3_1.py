@@ -25,7 +25,7 @@ def populate_locations(moves):
             current = next_location(direction, current)
             locations.add(current)
 
-    return locations, current
+    return locations
 
 
 def closest_intersection(first_locations, second_moves):
@@ -52,7 +52,7 @@ def manhattan_distance(first, second):
 
 def solve():
     wires = load_lines("input3.txt")
-    locations, centre = populate_locations(wires[0].strip().split(','))
+    locations = populate_locations(wires[0].strip().split(','))
     closest = closest_intersection(locations, wires[1].strip().split(','))
 
     print("Distance from centre to closest intersection is {0}".format(closest))
