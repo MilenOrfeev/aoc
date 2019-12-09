@@ -1,4 +1,4 @@
-from aoc_utils import load_lines
+from aoc_utils import load_comma_arrays
 
 
 def next_location(direction, current):
@@ -51,8 +51,8 @@ def manhattan_distance(first, second):
 
 
 def solve():
-    wires = load_lines("input3.txt")
-    locations = populate_locations(wires[0].strip().split(','))
-    closest = closest_intersection(locations, wires[1].strip().split(','))
+    wires = load_comma_arrays("input3.txt")
+    locations = populate_locations(wires[0])
+    closest = closest_intersection(locations, wires[1])
 
     print("Distance from centre to closest intersection is {0}".format(closest))

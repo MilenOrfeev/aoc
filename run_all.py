@@ -5,6 +5,7 @@ import importlib
 def run_all():
     task_files = glob.glob("task*")
     task_files.sort()
+    task_files = task_files[::-1]
 
     for task_file in task_files:
         module_name = task_file[:-3]  # remove .py
