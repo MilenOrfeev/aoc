@@ -8,19 +8,38 @@ def get_action_info():
     return json.loads(data)
 
 
-def do_operation(program, data):
-    action = data['action']
-    if action == '1':
+def do_operation(program, data, pr_input, pr_output):
+    operation = data['operation']
+    if operation == '1':
         program[data['result']] = data['operand1'] + data['operand2']
-    elif action == '2':
+    elif operation == '2':
         program[data['result']] = data['operand1'] * data['operand2']
+    elif operation == '3':
+        program[data['result']] = pr_input
+    elif operation == '4':
+        pr_output.append(data['operand1'])
     else:
-        raise ValueError("Invalid action {0}".format(action))
+        raise ValueError("Invalid action {0}".format(operation))
 
 
-def run_program(program):
+def prepend_modes(modes, num_ops):
+    """Append omitted zeroes to the modes"""
+    return modes + ((num_ops - len(modes)) * '0')
+
+
+def get_operand(program, index, mode):
+    if mode is '0':
+        return program[program[index]]
+    elif mode is '1':
+        return program[index]
+    else:
+        raise ValueError("Invalid mode {0}".format(mode))
+
+
+def run_program(program, pr_input=0):
     index = 0
     info = get_action_info()
+    pr_output = []
 
     while index < len(program):
         action = str(program[index])
@@ -28,14 +47,19 @@ def run_program(program):
         if action == '99':
             break
 
-        data = {'action': action}
-        num_ops = info[action]['operands']
-        for op_count in range(1, num_ops + 1):
+        operation = action[-1]
+        data = {'operation': operation}
+        num_ops = info[action[-1]]['operands']
+        modes = prepend_modes(action[:-2][::-1], num_ops)
+        for op_count in range(0, num_ops):
             index += 1
-            data["operand{}".format(op_count)] = program[program[index]]
-        if info[action]['result']:
-            index += 1
-            data["result"] = program[index]
+            data["operand{}".format(op_count + 1)] = get_operand(program, index, modes[op_count])
 
-        do_operation(program, data)
+        if info[operation]['result']:
+            index += 1
+            data["result"] = get_operand(program, index, '1')
+
+        do_operation(program, data, pr_input, pr_output)
         index += 1
+
+    return pr_output

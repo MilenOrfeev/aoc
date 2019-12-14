@@ -6,5 +6,13 @@
   "2": {
     "operands": 2,
     "result": true
+  },
+  "3": {
+    "operands": 0,
+    "result": true
+  },
+  "4": {
+    "operands": 1,
+    "result": false
   }
 }
