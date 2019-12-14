@@ -15,7 +15,7 @@ def do_operation(program, data, pr_input, pr_output):
     elif operation == '2':
         program[data['result']] = data['operand1'] * data['operand2']
     elif operation == '3':
-        program[data['result']] = pr_input
+        program[data['result']] = pr_input.pop(0)
     elif operation == '4':
         pr_output.append(data['operand1'])
     elif operation == '5':
@@ -52,7 +52,7 @@ def get_operand(program, index, mode):
         raise ValueError("Invalid mode {0}".format(mode))
 
 
-def run_program(program, pr_input=0):
+def run_program(program, pr_input=None):
     index = 0
     info = get_action_info()
     pr_output = []
