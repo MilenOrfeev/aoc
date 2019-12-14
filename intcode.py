@@ -18,6 +18,22 @@ def do_operation(program, data, pr_input, pr_output):
         program[data['result']] = pr_input
     elif operation == '4':
         pr_output.append(data['operand1'])
+    elif operation == '5':
+        if data['operand1'] != 0:
+            data['new_index'] = data['operand2']
+    elif operation == '6':
+        if data['operand1'] == 0:
+            data['new_index'] = data['operand2']
+    elif operation == '7':
+        if data['operand1'] < data['operand2']:
+            program[data['result']] = 1
+        else:
+            program[data['result']] = 0
+    elif operation == '8':
+        if data['operand1'] == data['operand2']:
+            program[data['result']] = 1
+        else:
+            program[data['result']] = 0
     else:
         raise ValueError("Invalid action {0}".format(operation))
 
@@ -59,7 +75,12 @@ def run_program(program, pr_input=0):
             index += 1
             data["result"] = get_operand(program, index, '1')
 
+        data['index'] = index
         do_operation(program, data, pr_input, pr_output)
-        index += 1
+
+        if 'new_index' in data:
+            index = data['new_index']
+        else:
+            index += 1
 
     return pr_output

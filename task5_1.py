@@ -7,4 +7,4 @@ def solve():
     system_id = 1
 
     output = intcode.run_program(program, system_id)
-    print("Diagnostic code is {}".format(output[-1]))
+    print("Diagnostic code for system ID {0} is {1}".format(system_id, output[-1]))
