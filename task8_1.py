@@ -12,9 +12,10 @@ def count_digit(layer, val=0):
 
 def solve():
     w, h = 25, 6
-    digits = load_digits("input5.txt")
+    digits = load_digits("input8.txt")
     layers = split(digits, w * h)
 
     best_layer = min(layers, key=lambda l: count_digit(l))
 
-    print(count_digit(best_layer, 1) * count_digit(best_layer, 2))
+    result = count_digit(best_layer, 1) * count_digit(best_layer, 2)
+    print("Number of 1 digits * Number of 2 digits is {}".format(result))
