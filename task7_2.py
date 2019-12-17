@@ -1,26 +1,28 @@
 import itertools
-import intcode
 import copy
 
 from aoc_utils import load_array
+from intcode import Intcode
 
 
 def run_amplifiers(program, sequence):
     amplifiers = []
     for phase in sequence:
-        amplifier = copy.deepcopy(program)
-        output, inst_pointer = intcode.run_program(amplifier, [phase])
-        amplifiers.append((amplifier, inst_pointer))
+        code = copy.deepcopy(program)
+        amplifier = Intcode(code, [phase])
+        amplifier.run()
+        amplifiers.append(amplifier)
 
     output = [0]
     last_from_e = 0
     while len(output) is not 0:
         last_from_e = output[0]
 
-        for a_index in range(0, len(amplifiers)):
-            next_amp, inst_pointer = amplifiers[a_index]
-            output, inst_pointer = intcode.run_program(next_amp, output, inst_pointer)
-            amplifiers[a_index] = (next_amp, inst_pointer)
+        for index in range(0, len(amplifiers)):
+            amplifier = amplifiers[index]
+            if len(output) > 0:
+                amplifier.add_input(output[0])
+            output = amplifier.run()
 
     return last_from_e
 

@@ -30,7 +30,12 @@ class Intcode(object):
         """Append omitted zeroes to the modes"""
         return modes + ((num_ops - len(modes)) * '0')
 
+    def add_input(self, value):
+        self._pr_input.append(value)
+
     def do_operation(self, data):
+        self.index += 1
+
         program = self.program
         operation = data['operation']
         if operation == '1':
@@ -85,9 +90,8 @@ class Intcode(object):
 
         return data
 
-    def run_program(self):
+    def run(self):
         program = self.program
-        pr_output = []
 
         while self.index < len(program):
             action = str(program[self.index])
@@ -103,6 +107,14 @@ class Intcode(object):
             op_data = self.get_operation_data(action)
             self.do_operation(op_data)
 
-        output_so_far = copy.deepcopy(pr_output)
+        output_so_far = copy.deepcopy(self._pr_output)
         self._pr_output = []
         return output_so_far
+
+
+def run_program(program, pr_input=None):
+    if pr_input is None:
+        pr_input = []
+    intcode = Intcode(program, pr_input)
+    return intcode.run()
+
