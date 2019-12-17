@@ -1,0 +1,34 @@
+{
+  "1": {
+    "operands": 2,
+    "result": true
+  },
+  "2": {
+    "operands": 2,
+    "result": true
+  },
+  "3": {
+    "operands": 0,
+    "result": true
+  },
+  "4": {
+    "operands": 1,
+    "result": false
+  },
+  "5": {
+    "operands": 2,
+    "result": false
+  },
+  "6": {
+    "operands": 2,
+    "result": false
+  },
+  "7": {
+    "operands": 2,
+    "result": true
+  },
+  "8": {
+    "operands": 2,
+    "result": true
+  }
+}
