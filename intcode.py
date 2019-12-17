@@ -19,6 +19,7 @@ def do_operation(program, data, pr_input, pr_output):
     elif operation == '4':
         pr_output.append(data['operand1'])
     elif operation == '5':
+        # print(data['operand1'])
         if data['operand1'] != 0:
             data['new_index'] = data['operand2']
     elif operation == '6':
@@ -52,8 +53,11 @@ def get_operand(program, index, mode):
         raise ValueError("Invalid mode {0}".format(mode))
 
 
-def run_program(program, pr_input=None):
-    index = 0
+def run_program(program, pr_input=None, inst_pointer=None):
+    if inst_pointer is not None:
+        index = inst_pointer
+    else:
+        index = 0
     info = get_action_info()
     pr_output = []
 
@@ -64,6 +68,9 @@ def run_program(program, pr_input=None):
             break
 
         operation = action[-1]
+        if operation == '3' and len(pr_input) == 0:
+            return pr_output, index
+
         data = {'operation': operation}
         num_ops = info[action[-1]]['operands']
         modes = prepend_modes(action[:-2][::-1], num_ops)
@@ -83,4 +90,6 @@ def run_program(program, pr_input=None):
         else:
             index += 1
 
+    if inst_pointer is not None:
+        return pr_output, index
     return pr_output
