@@ -20,6 +20,4 @@ def run_all():
 
 
 if __name__ == "__main__":
-    import task8_1
-    task8_1.solve()
-    # run_all()
+    run_all()
