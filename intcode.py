@@ -2,6 +2,31 @@ import copy
 import json
 
 
+class Memory(object):
+    def __init__(self, code):
+        self._memory = code
+        self._memory.extend([0] * len(code))
+
+    def write(self, index, element):
+        self.extend_if_needed(index)
+        self._memory[index] = element
+
+    def read(self, index):
+        self.extend_if_needed(index)
+        return self._memory[index]
+
+    def extend_if_needed(self, index):
+        while index > len(self._memory):
+            new_length = int(len(self._memory) * 1.5)
+            self._memory.extend([0] * new_length)
+
+    def read_all(self):
+        return copy.deepcopy(self._memory)
+
+    def get_length(self):
+        return len(self._memory)
+
+
 class Intcode(object):
     """The Intcode computer that is used in The Advent Of Code
 
@@ -12,11 +37,12 @@ class Intcode(object):
     """
 
     def __init__(self, program, pr_input):
-        self.program = program
+        self.memory = Memory(program)
         self._pr_input = copy.deepcopy(pr_input)
         self.index = 0
         self._pr_output = []
         self.info = Intcode.get_action_info()
+        self.relative_base = 0
 
     @staticmethod
     def get_action_info():
@@ -36,14 +62,14 @@ class Intcode(object):
     def do_operation(self, data):
         self.index += 1
 
-        program = self.program
+        memory = self.memory
         operation = data['operation']
         if operation == '1':
-            program[data['result']] = data['operand1'] + data['operand2']
+            memory.write(data['result'],  data['operand1'] + data['operand2'])
         elif operation == '2':
-            program[data['result']] = data['operand1'] * data['operand2']
+            memory.write(data['result'], data['operand1'] * data['operand2'])
         elif operation == '3':
-            program[data['result']] = self._pr_input.pop(0)
+            memory.write(data['result'], self._pr_input.pop(0))
         elif operation == '4':
             self._pr_output.append(data['operand1'])
         elif operation == '5':
@@ -54,23 +80,23 @@ class Intcode(object):
                 self.index = data['operand2']
         elif operation == '7':
             if data['operand1'] < data['operand2']:
-                program[data['result']] = 1
+                memory.write(data['result'], 1)
             else:
-                program[data['result']] = 0
+                memory.write(data['result'], 0)
         elif operation == '8':
             if data['operand1'] == data['operand2']:
-                program[data['result']] = 1
+                memory.write(data['result'], 1)
             else:
-                program[data['result']] = 0
+                memory.write(data['result'], 0)
         else:
             raise ValueError("Invalid action {0}".format(operation))
 
     def get_operand(self, mode):
-        program = self.program
+        memory = self.memory
         if mode is '0':
-            return program[program[self.index]]
+            return memory.read(memory.read(self.index))
         elif mode is '1':
-            return program[self.index]
+            return memory.read(self.index)
         else:
             raise ValueError("Invalid mode {0}".format(mode))
 
@@ -91,10 +117,10 @@ class Intcode(object):
         return data
 
     def run(self):
-        program = self.program
+        memory = self.memory
 
-        while self.index < len(program):
-            action = str(program[self.index])
+        while self.index < memory.get_length():
+            action = str(memory.read(self.index))
 
             if action == '99':
                 break
