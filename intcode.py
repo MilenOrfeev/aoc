@@ -88,6 +88,8 @@ class Intcode(object):
                 memory.write(data['result'], 1)
             else:
                 memory.write(data['result'], 0)
+        elif operation == '9':
+            self.relative_base += data['operand1']
         else:
             raise ValueError("Invalid action {0}".format(operation))
 
@@ -97,6 +99,8 @@ class Intcode(object):
             return memory.read(memory.read(self.index))
         elif mode is '1':
             return memory.read(self.index)
+        elif mode is '2':
+            return memory.read(self.relative_base)
         else:
             raise ValueError("Invalid mode {0}".format(mode))
 
@@ -105,14 +109,17 @@ class Intcode(object):
         data = {'operation': operation}
 
         num_ops = self.info[action[-1]]['operands']
-        modes = Intcode._prepend_modes(action[:-2][::-1], num_ops)
+        modes = Intcode._prepend_modes(action[:-2][::-1], num_ops + 1)
         for op_count in range(0, num_ops):
             self.index += 1
             data["operand{}".format(op_count + 1)] = self.get_operand(modes[op_count])
 
         if self.info[operation]['result']:
             self.index += 1
-            data["result"] = self.get_operand('1')
+            if modes[-1] == '2':
+                data['result'] = self.relative_base
+            else:
+                data["result"] = self.get_operand(modes[-1])
 
         return data
 
