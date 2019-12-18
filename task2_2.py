@@ -1,5 +1,5 @@
 import copy
-import task2_1
+import intcode
 from aoc_utils import load_array
 
 
@@ -9,7 +9,7 @@ def noun_verb_pair(instructions, desired, highest):
             copied = copy.deepcopy(instructions)
             copied[1] = noun
             copied[2] = verb
-            task2_1.do_instructions(copied)
+            intcode.run_program(copied)
 
             if copied[0] == desired:
                 return noun, verb

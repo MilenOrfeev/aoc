@@ -1,56 +1,10 @@
 from aoc_utils import load_array
-
-
-def do_operation(instructions, action, par_one, par_two, result_index, input_val):
-    if action is '1':
-        instructions[result_index] = par_one + par_two
-    elif action is '2':
-        instructions[result_index] = par_one * par_two
-    elif action is '3':
-        instructions[par_one] = input_val
-    elif action is '4':
-        print(par_one)
-    else:
-        raise ValueError("Invalid action {0}".format(action))
-
-
-def do_instructions(instructions, input_val):
-    index = 0
-
-    while index < len(instructions):
-        command = instructions[index]
-
-        if command is 99:
-            break
-
-        command = str(command)
-        action = command[-1]
-
-        index += 1
-        if action is '3':
-            par_one = instructions[index]
-        elif len(command) > 2 and command[-3] == '1':
-            par_one = instructions[index]
-        else:
-            par_one = instructions[instructions[index]]
-
-        if action in ('1', '2'):
-            index += 1
-            if len(command) > 3 and command[-4] == '1':
-                par_two = instructions[index]
-            else:
-                par_two = instructions[instructions[index]]
-            index += 1
-            result_index = instructions[index]
-        else:
-            par_two = -1
-            result_index = -1
-
-        do_operation(instructions, action, par_one, par_two, result_index, input_val)
-        index += 1
+import intcode
 
 
 def solve():
     program = load_array("input5.txt")
     system_id = 1
-    do_instructions(program, system_id)
+
+    output = intcode.run_program(program, [system_id])
+    print("Diagnostic code for system ID {0} is {1}".format(system_id, output[-1]))

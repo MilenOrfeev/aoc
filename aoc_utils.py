@@ -12,6 +12,11 @@ def load_lines(file_name):
         return text_file.readlines()
 
 
+def load_digits(file_name):
+    with open(file_name) as text_file:
+        line = text_file.readline()
+        return [int(x) for x in line.strip()]
+
 def load_comma_arrays(file_name):
     lines = load_lines(file_name)
     return [line.strip().split(',') for line in lines]
