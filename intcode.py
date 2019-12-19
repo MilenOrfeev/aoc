@@ -100,7 +100,8 @@ class Intcode(object):
         elif mode is '1':
             return memory.read(self.index)
         elif mode is '2':
-            return memory.read(self.relative_base)
+            address = self.relative_base + memory.read(self.index)
+            return memory.read(address)
         else:
             raise ValueError("Invalid mode {0}".format(mode))
 
@@ -117,9 +118,10 @@ class Intcode(object):
         if self.info[operation]['result']:
             self.index += 1
             if modes[-1] == '2':
-                data['result'] = self.relative_base
+                address= self.relative_base + self.memory.read(self.index)
+                data['result'] = address
             else:
-                data["result"] = self.get_operand(modes[-1])
+                data["result"] = self.get_operand('1')
 
         return data
 
