@@ -16,6 +16,7 @@ def draw(layers):
             print('#', end=' ')
         else:
             print('.', end=' ')
+    print()
 
 
 def solve():
