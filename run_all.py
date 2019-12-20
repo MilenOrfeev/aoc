@@ -1,8 +1,6 @@
 import glob
 import importlib
 
-import task10_2
-
 
 def run_all():
     task_files = glob.glob("task*")
@@ -22,5 +20,4 @@ def run_all():
 
 
 if __name__ == "__main__":
-    task10_2.solve()
-    # run_all()
+    run_all()
